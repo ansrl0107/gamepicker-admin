@@ -1,0 +1,9 @@
+.game img {
+    width: 160px;
+    height: 90px;
+    overflow: hidden;
+}
+
+.game {
+    background-color: aqua;
+}
