@@ -24,7 +24,7 @@ class Games extends Component {
                 return (
                     <article key={game.id} className='game'>
                         <Link to={`/games/${game.id}`}>
-                                <img src={game.images[0]} alt={game.title}></img>
+                            <img src={game.images[0]} alt={game.title}></img>
                             {game.title}
                         </Link>
                     </article>

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import SideBar from './components/SideBar';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { Home, Games } from './pages'
-import './app.css'
+import './App.css'
 
 class App extends Component {
     render() {
