@@ -1,0 +1,26 @@
+.login legend img {
+    width: 100%;
+}
+
+.login form {
+    width: 512px;
+    margin: 0 auto;
+    margin-top: 256px;
+    background-color: #fff;
+    padding: 32px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.login form > legend {
+    width: 50%;
+    margin: 32px auto;
+}
+
+.login form > * {
+    width: 100%;
+}
+
+.login form > button {
+    margin-top: 32px;
+}

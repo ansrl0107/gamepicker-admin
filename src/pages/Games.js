@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import './Games.css'
 
+import AppBar from '@material-ui/core/AppBar'
+
 class Games extends Component {
     state = {
         games: []
@@ -35,6 +37,7 @@ class Games extends Component {
         return (
             <React.Fragment>
                 {renderGames()}
+                <AppBar></AppBar>
             </React.Fragment>
         )
     }
