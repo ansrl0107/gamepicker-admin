@@ -26,7 +26,6 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import MenuIcon from '@material-ui/icons/Menu';
 import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 
 import { Link } from 'react-router-dom';
@@ -60,7 +59,7 @@ const styles = theme => ({
 		height: '100%'
 	},
 	drawer: {
-		[theme.breakpoints.up('sm')]: {
+		[theme.breakpoints.up('md')]: {
 			width: drawerWidth,
 			flexShrink: 0,
 		}
@@ -83,22 +82,22 @@ const styles = theme => ({
 	},
 	content: {
 		flexGrow: 1,
-		/*
-		[theme.breakpoints.down('sm')]: {
-			width: `100%`,
-		},
-		[theme.breakpoints.up('sm')]: {
-			width: `calc(100% - ${drawerWidth}px)`,
-		},
-		*/
 		width: 100
 	},
 });
 
 class ResponsiveDrawer extends React.Component {
 	state = {
-		mobileOpen: false
+		mobileOpen: false,
+		isAuthenticated: false
 	};
+
+	componentDidMount = () => {    
+    	const token = sessionStorage.getItem('token');
+		if (!token){ 
+			this.setState({ isAuthenticated: true });
+		}		
+    }
 
 	handleDrawerToggle = () => {
 		this.setState(state => ({ mobileOpen: !state.mobileOpen }));
@@ -139,12 +138,13 @@ class ResponsiveDrawer extends React.Component {
 				</List>
 			</div>
 		);
+
 		return (
 			<div className={classes.root}>
 				<Router>
 					<MuiThemeProvider theme={my_theme}>
 						<CssBaseline />
-						<AppBar position="fixed" className={classes.appBar} color='white'>
+						<AppBar position="fixed" className={classes.appBar} color='inherit'>
 						<Toolbar>
 							<IconButton
 								color="inherit"
@@ -158,7 +158,7 @@ class ResponsiveDrawer extends React.Component {
 						</AppBar>
 						<nav className={classes.drawer}>
 						{/* The implementation can be swapped with js to avoid SEO duplication of links. */}
-						<Hidden smUp implementation="css">
+						<Hidden mdUp implementation="css">
 							<Drawer
 								container={this.props.container}
 								variant="temporary"
@@ -172,8 +172,8 @@ class ResponsiveDrawer extends React.Component {
 							{drawer}
 							</Drawer>
 						</Hidden>
-						<Hidden xsDown implementation="css">
-							<Drawer classes={{ paper: classes.drawerPaper }} variant="permanent" open >
+						<Hidden smDown implementation="css">
+							<Drawer classes={{ paper: classes.drawerPaper }} variant="permanent" open>
 								{drawer}
 							</Drawer>
 						</Hidden>
