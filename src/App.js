@@ -184,9 +184,10 @@ class ResponsiveDrawer extends React.Component {
 						</Hidden>
 						</nav>
 						<main className={classes.content}>
-							<Hidden mdDown>
+							<Hidden mdUp>
 								<div className={classes.toolbar} />
 							</Hidden>
+							{/* 밑 switch를 div 안에 넣어서 반응형으로 만들자 .games, .game-list 처럼 */}
 							<Switch>
 								<Route exact path='/' component={Home} />
 								<Route exact path='/login' component={Login} />

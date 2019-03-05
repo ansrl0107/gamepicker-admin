@@ -45,7 +45,6 @@
 
 @media (max-width: 960px) {
     .games {
-        margin-top: 64px;
         height: calc(100% - 64px);
     }
 }
