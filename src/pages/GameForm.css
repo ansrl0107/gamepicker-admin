@@ -1,6 +1,7 @@
 .game-form {
     height: calc(100% - 64px);
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
 .game-form > form {
