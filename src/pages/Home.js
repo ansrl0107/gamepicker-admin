@@ -1,30 +1,18 @@
 import React, { Component } from 'react';
-import AppBar from '../components/AppBar'
-import { Redirect } from 'react-router-dom'
 
 class Home extends Component {
-    state = {
-        login: false
-    }
-    componentDidMount = () => {
+    componentDidMount = () => {        
         const token = sessionStorage.getItem('token');
-        if (token) {
-            this.setState({
-                login: true
-            })
+        if (!token) {
+            this.props.history.push('/login');
         }
     }
     render() {
-        const { login } = this.state;
-        if (login) {
-            return(
-                <div>
-                    <AppBar title='Gamepicker'></AppBar>
-                </div>
-            )
-        } else {
-            return <Redirect to='/login'></Redirect>
-        }
+        return(
+            <div>
+                <div>dsadas</div>
+            </div>
+        )
     }
 }
 

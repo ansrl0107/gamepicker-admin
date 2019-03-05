@@ -17,16 +17,21 @@ class Login extends Component {
         toastMessage: "",
         open: false
     }
+    componentDidMount = () => {
+        const token = sessionStorage.getItem('token');
+        if (token) {
+            this.props.history.push('/');
+        }
+    }
     handleClick = () => {
         this.setState({ open: true });
     };
     
     handleClose = (event, reason) => {
-    if (reason === 'clickaway') {
-        return;
-    }
-
-    this.setState({ open: false });
+        if (reason === 'clickaway') {
+            return;
+        }
+        this.setState({ open: false });
     };
     handleChange = (e) => {
         this.setState({
@@ -49,6 +54,7 @@ class Login extends Component {
         if (res.ok) {
             sessionStorage.setItem('token', json.token);            
             this.setState({ open: true, toastMessage: 'Login success' });
+            this.props.history.push('/')
         } else {
             this.setState({ open: true, toastMessage: 'Login failed' });
         }

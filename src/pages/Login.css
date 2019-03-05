@@ -3,13 +3,15 @@
 }
 
 .login form {
-    width: 512px;
+    width: 100%;
+    max-width: 512px;
     margin: 0 auto;
     margin-top: 256px;
     background-color: #fff;
     padding: 32px;
     border: 1px solid #ccc;
     border-radius: 4px;
+    box-sizing: border-box;
 }
 
 .login form > legend {

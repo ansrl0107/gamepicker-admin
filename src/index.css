@@ -22,3 +22,18 @@ html, body, #root {
 #root {
   background-color: #FAFAFA;
 }
+
+#root > section {
+	height: 100%;
+	position: relative;
+	width: 100%;
+}
+
+::-webkit-scrollbar {
+    width: 4px;  /* remove scrollbar space */
+    background: transparent;  /* optional: just make scrollbar invisible */
+}
+/* optional: show position indicator in red */
+::-webkit-scrollbar-thumb {
+    background: #E71469;
+}

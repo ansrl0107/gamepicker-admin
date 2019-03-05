@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import './Games.css'
+import Card from '../components/Card';
 
-import AppBar from '@material-ui/core/AppBar'
+import AddIcon from '@material-ui/icons/Add';
+import Fab from '@material-ui/core/Fab';
+import Tooltip from '@material-ui/core/Tooltip';
 
 class Games extends Component {
     state = {
@@ -16,29 +18,48 @@ class Games extends Component {
         });
         const json = await res.json();        
         const games = json.games;
-        console.log(games);
         this.setState({ games });
-        
+    }
+    handleClick = (id) => {
+        this.props.history.push(`/games/${id}`);
+    }
+    handleFab = (e) => {
+        this.props.history.push(`/games/create`);
     }
     render() {
-        const renderGames = () => {
-            const res = this.state.games.map(game => {
-                return (
-                    <article key={game.id} className='game'>
-                        <Link to={`/games/${game.id}`}>
-                            <img src={game.images[0]} alt={game.title}></img>
-                            {game.title}
-                        </Link>
-                    </article>
-                )
-            });            
-            return res;
-        }
+        const { games } = this.state;
         return (
-            <React.Fragment>
-                {renderGames()}
-                <AppBar></AppBar>
-            </React.Fragment>
+            <section className='games'>
+                <Tooltip title="Add Game"
+                    aria-label="Add" 
+                    onClick={this.handleFab}
+                    style={{
+                        bottom: 16,
+                        right: 16,
+                        position: 'fixed',
+                        zIndex: 1
+                    }}>
+                    <Fab color="primary">
+                        <AddIcon />
+                    </Fab>
+                </Tooltip>
+                <section className='game-list'>
+                {
+                    games.map((game, index) => {
+                        return (
+                            <div key={`game-item-${index}`} className='game-item' name='dsa' game-id={game.id} onClick={this.handleClick}>
+                                <Card
+                                    title={game.title}
+                                    img={game.images[0]}
+                                    gameId={game.id}
+                                    handleClick={this.handleClick}
+                                />
+                            </div>
+                        )
+                    })
+                }
+                </section>
+            </section>
         )
     }
 }

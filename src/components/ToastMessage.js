@@ -12,9 +12,7 @@ const styles = theme => ({
 });
 
 function SimpleSnackbar(props) {
-    const { classes, message, open, handleClose } = props;
-    console.log(props);
-    
+    const { classes, message, open, handleClose } = props;    
     return (
         <div className={classes.root}>
             <Snackbar
