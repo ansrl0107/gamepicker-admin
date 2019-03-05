@@ -70,6 +70,7 @@ const styles = theme => ({
 		marginLeft: drawerWidth,
 		[theme.breakpoints.up('md')]: {
 			width: `calc(100% - ${drawerWidth}px)`,
+			height: 0
 		},
 	},
 	menuButton: {
@@ -80,7 +81,7 @@ const styles = theme => ({
 	},
 	toolbar: theme.mixins.toolbar,
 	drawerPaper: {
-		width: drawerWidth,
+		width: drawerWidth
 	},
 	content: {
 		flexGrow: 1,
@@ -117,25 +118,25 @@ class ResponsiveDrawer extends React.Component {
 				<List>
 					<ListItem button key='Games' component={Link} to="/games">
 						<ListItemIcon>
-							<GameIcon />
+							<GameIcon color='primary'/>
 						</ListItemIcon>
 						<ListItemText primary='Games'/>
 					</ListItem>
 					<ListItem button key='Push Notification' component={Link} to="/notification">
 						<ListItemIcon>
-							<NotificationIcon />
+							<NotificationIcon color='primary'/>
 						</ListItemIcon>
 						<ListItemText primary='Push Notification' />
 					</ListItem>
 					<ListItem button key='Q&A' component={Link} to="/qna">
 						<ListItemIcon>
-							<QuestionAnswerIcon />
+							<QuestionAnswerIcon color='primary'/>
 						</ListItemIcon>
 						<ListItemText primary='Q&A' />
 					</ListItem>
 					<ListItem button key='Notice' component={Link} to="/notice">
 						<ListItemIcon>
-							<NoticeIcon />
+							<NoticeIcon color='primary'/>
 						</ListItemIcon>
 						<ListItemText primary='Notice' />
 					</ListItem>
@@ -156,7 +157,7 @@ class ResponsiveDrawer extends React.Component {
 								onClick={this.handleDrawerToggle}
 								className={classes.menuButton}
 							>
-							<MenuIcon />
+							<MenuIcon color='primary'/>
 							</IconButton>
 						</Toolbar>
 						</AppBar>
@@ -183,14 +184,16 @@ class ResponsiveDrawer extends React.Component {
 						</Hidden>
 						</nav>
 						<main className={classes.content}>
-							<div className={classes.toolbar} />
-								<Switch>
-									<Route exact path='/' component={Home} />
-									<Route exact path='/login' component={Login} />
-									<Route exact path='/games' component={Games} />
-									<Route path='/games/create' component={GameCreate} />
-									<Route path='/games/:id' component={GameDetail} />
-								</Switch>
+							<Hidden mdDown>
+								<div className={classes.toolbar} />
+							</Hidden>
+							<Switch>
+								<Route exact path='/' component={Home} />
+								<Route exact path='/login' component={Login} />
+								<Route exact path='/games' component={Games} />
+								<Route path='/games/create' component={GameCreate} />
+								<Route path='/games/:id' component={GameDetail} />
+							</Switch>
 						</main>
 					</MuiThemeProvider>
 				</Router>

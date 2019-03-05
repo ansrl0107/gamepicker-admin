@@ -1,7 +1,19 @@
 .game-form {
-    height: calc(100% - 64px);
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
+}
+
+@media (max-width: 960px) {
+    .game-form {
+        margin-top: 64px;
+        height: calc(100% - 64px);
+    }
+}
+
+@media (min-width: 961px) {
+    .game-form {
+        height: 100%;
+    }
 }
 
 .game-form > form {
