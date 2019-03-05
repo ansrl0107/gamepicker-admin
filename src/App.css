@@ -13,3 +13,11 @@ a {
     text-decoration: none;
     color: inherit;
 }
+
+.logo {
+    display: block;
+    height: 64px;
+    margin: 0 auto;
+    padding: 22px 0;
+    box-sizing: border-box;
+}

@@ -30,6 +30,8 @@ import { withStyles } from '@material-ui/core/styles';
 
 import { Link } from 'react-router-dom';
 
+import TextLogo from './asset/text_logo.png';
+
 const my_theme = createMuiTheme({
     palette: {
       primary: {
@@ -108,7 +110,9 @@ class ResponsiveDrawer extends React.Component {
 
 		const drawer = (
 			<div>
-				<div className={classes.toolbar}></div>
+				<div className={classes.toolbar}>
+					<img src={TextLogo} alt='logo' className='logo'/>
+				</div>
 				<Divider />
 				<List>
 					<ListItem button key='Games' component={Link} to="/games">
