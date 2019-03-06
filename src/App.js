@@ -4,6 +4,7 @@ import GameCreate from './pages/GameCreate';
 import GameDetail from './pages/GameDetail';
 import PushNotification from './pages/PushNotification';
 import Reply from './pages/Reply';
+import Notice from './pages/Notice';
 import './App.css'
 
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
@@ -198,6 +199,7 @@ class ResponsiveDrawer extends React.Component {
 								<Route path='/games/:id' component={GameDetail} />
 								<Route path='/notification' component={PushNotification} />
 								<Route path='/reply' component={Reply} />
+								<Route path='/notice' component={Notice} />
 							</Switch>
 						</main>
 					</MuiThemeProvider>
