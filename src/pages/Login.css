@@ -3,15 +3,26 @@
 }
 
 .login form {
-    width: 100%;
-    max-width: 512px;
-    margin: 0 auto;
-    margin-top: 256px;
-    background-color: #fff;
-    padding: 32px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
     box-sizing: border-box;
+    position: absolute;
+    top: calc(50% - 200px);
+}
+
+@media (max-width: 600px) {
+    .login form {
+        width: calc(100% - 32px);
+    }
+}
+
+@media (min-width: 601px) {
+    .login form {
+        width: calc(600px - 32px);
+        left: calc(50% - 284px);
+    }
+}
+
+.login form input {
+    background-color: white;
 }
 
 .login form > legend {

@@ -40,4 +40,5 @@ html, body, #root {
 
 section.content {
   padding: 16px;
+  box-sizing: border-box;
 }

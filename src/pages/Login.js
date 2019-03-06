@@ -61,25 +61,33 @@ class Login extends Component {
             [e.target.name]: e.target.value
         });
     }
+    handleToastMessage = (message) => {
+        this.setState({ open: true, toastMessage: message });
+    }
     handleLogin = async () => {
         const { email, password } = this.state;
-        const res = await fetch(`http://api.gamepicker.co.kr/auth/login?admin`, {
-            headers: {
-                'authorization': 'w6mgLXNHbPgewJtRESxh',
-                'content-type': 'application/json'
-            },
-            method: 'post',
-            body: JSON.stringify({
-                email, password
-            })
-        });
-        const json = await res.json();
-        if (res.ok) {
-            sessionStorage.setItem('token', json.token);            
-            this.setState({ open: true, toastMessage: 'Login success' });
-            window.location.reload();
-        } else {
-            this.setState({ open: true, toastMessage: 'Login failed' });
+        try {
+            const res = await fetch(`http://api.gamepicker.co.kr/auth/login?admin`, {
+                headers: {
+                    'authorization': 'w6mgLXNHbPgewJtRESxh',
+                    'content-type': 'application/json'
+                },
+                method: 'post',
+                body: JSON.stringify({
+                    email, password
+                })
+            });
+            const json = await res.json();
+            if (res.ok) {
+                sessionStorage.setItem('token', json.token);            
+                this.handleToastMessage('Login Success');
+                window.location.reload();
+            } else {
+                this.handleToastMessage(json.message)
+            }
+        } catch (err) {
+            console.error(err);
+            this.handleToastMessage(err.message?err.message:err);
         }
     }
     render() {
@@ -89,7 +97,7 @@ class Login extends Component {
         } else {
             return (
                 <MuiThemeProvider theme={my_theme}>
-                    <section className='login'>
+                    <section className='login content'>
                         <form>
                             <legend>
                                 <img src={logo} alt='text logo'></img>
