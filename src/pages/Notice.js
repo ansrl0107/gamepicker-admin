@@ -82,6 +82,7 @@ class Notice extends React.Component {
             [e.target.name]: e.target.value
         })
     }
+    //quill 로 공지 쓰는 부분 만들자
     render() {
         return (
             <section className='notice content'>

@@ -9,6 +9,29 @@ import ToastMessage from '../components/ToastMessage';
 import logo from '../asset/text_logo.png'
 import './Login.css'
 
+import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
+
+const my_theme = createMuiTheme({
+    palette: {
+      primary: {
+        light:'#eb4387',
+        main: '#E71469',
+        dark: '#a10e49',
+        contrastText: '#FFFFFF'
+      },
+      secondary: {
+        light: '#0066ff',
+        main: '#0044ff',
+        // dark: will be calculated from palette.secondary.main,
+        contrastText: '#ffcc00',
+      },
+      typography: {
+        useNextVariants: true,
+      },
+      // error: will use the default color
+    },
+});
+
 class Login extends Component {
     state = {
         email: "",
@@ -20,7 +43,7 @@ class Login extends Component {
     componentDidMount = () => {
         const token = sessionStorage.getItem('token');
         if (token) {
-            this.props.history.push('/');
+            window.location.reload();
         }
     }
     handleClick = () => {
@@ -54,7 +77,7 @@ class Login extends Component {
         if (res.ok) {
             sessionStorage.setItem('token', json.token);            
             this.setState({ open: true, toastMessage: 'Login success' });
-            this.props.history.push('/')
+            window.location.reload();
         } else {
             this.setState({ open: true, toastMessage: 'Login failed' });
         }
@@ -65,39 +88,41 @@ class Login extends Component {
             return <Redirect to='/'></Redirect>
         } else {
             return (
-                <section className='login'>
-                    <form>
-                        <legend>
-                            <img src={logo} alt='text logo'></img>
-                        </legend>
-                        <TextField
-                            id="outlined-email-input"
-                            label="Email"
-                            type="email"
-                            name="email"
-                            autoComplete="email"
-                            margin="normal"
-                            variant="outlined"
-                            onChange={this.handleChange}
+                <MuiThemeProvider theme={my_theme}>
+                    <section className='login'>
+                        <form>
+                            <legend>
+                                <img src={logo} alt='text logo'></img>
+                            </legend>
+                            <TextField
+                                id="outlined-email-input"
+                                label="Email"
+                                type="email"
+                                name="email"
+                                autoComplete="email"
+                                margin="normal"
+                                variant="outlined"
+                                onChange={this.handleChange}
+                            />
+                            <TextField
+                                id="outlined-password-input"
+                                label="Password"
+                                type="password"
+                                name="password"
+                                autoComplete="current-password"
+                                margin="normal"
+                                variant="outlined"
+                                onChange={this.handleChange}
+                            />
+                            <Button variant="contained" color="primary" onClick={this.handleLogin}>Login</Button>
+                        </form>        
+                        <ToastMessage
+                            message={this.state.toastMessage}
+                            open={this.state.open}
+                            handleClose={this.handleClose}
                         />
-                        <TextField
-                            id="outlined-password-input"
-                            label="Password"
-                            type="password"
-                            name="password"
-                            autoComplete="current-password"
-                            margin="normal"
-                            variant="outlined"
-                            onChange={this.handleChange}
-                        />
-                        <Button variant="contained" color="primary" onClick={this.handleLogin}>Login</Button>
-                    </form>        
-                    <ToastMessage
-                        message={this.state.toastMessage}
-                        open={this.state.open}
-                        handleClose={this.handleClose}
-                    />
-                </section>
+                    </section>
+                </MuiThemeProvider>
             )
         }
     }
