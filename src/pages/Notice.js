@@ -48,6 +48,8 @@ class Notice extends React.Component {
         const { notice, notice_title } = this.state;
         const token = sessionStorage.getItem('token');
         try {
+            if (notice === '' || notice_title === '')
+                throw Error('빈칸을 채워주세요');         
             const res = await fetch('http://api.gamepicker.co.kr/admin/notices', {
                 headers: {
                     'authorization': process.env.REACT_APP_AUTHORIZATION,
@@ -67,7 +69,11 @@ class Notice extends React.Component {
                 this.handleToastMessage(json.message)
             }
         } catch (err) {
-            this.handleToastMessage(err);
+            if (err.message) {
+                this.handleToastMessage(err.message)
+            } else {
+                this.handleToastMessage(err);
+            }
         }
         
     }
