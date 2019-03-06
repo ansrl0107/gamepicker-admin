@@ -53,25 +53,28 @@ class Reply extends React.Component {
     handleReply = async () => {
         const { questions, selectedQuestionIndex } = this.state;
         const token = sessionStorage.getItem('token');
-        console.log(this.state.reply);
-        
         try {
-            const res = await fetch(`http://api.gamepicker.co.kr/admin/questions/${questions[selectedQuestionIndex].id}/reply`, {
-                headers: {
-                    'authorization': process.env.REACT_APP_AUTHORIZATION,
-                    'content-type': 'application/json',
-                    'x-access-token': token
-                },
-                method: 'post',
-                body: JSON.stringify({
-                    reply: this.state.reply
-                })
-            });
-            if (res.ok) {
-                this.handleToastMessage('답변 완료');
-            } else {
-                const json = await res.json();
-                this.handleToastMessage(json.message);
+            if (!questions[selectedQuestionIndex])
+                this.handleToastMessage('답변할 질문을 선택해주세요');
+            else {
+                const question_id = questions[selectedQuestionIndex].id;
+                const res = await fetch(`http://api.gamepicker.co.kr/admin/questions/${question_id}/reply`, {
+                    headers: {
+                        'authorization': process.env.REACT_APP_AUTHORIZATION,
+                        'content-type': 'application/json',
+                        'x-access-token': token
+                    },
+                    method: 'post',
+                    body: JSON.stringify({
+                        reply: this.state.reply
+                    })
+                });
+                if (res.ok) {
+                    this.handleToastMessage('답변 완료');
+                } else {
+                    const json = await res.json();
+                    this.handleToastMessage(json.message);
+                }
             }
         } catch (err) {
             console.error(err);
