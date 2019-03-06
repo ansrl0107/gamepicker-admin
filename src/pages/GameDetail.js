@@ -190,7 +190,7 @@ class GameCreate extends React.Component {
         const { title, developer, publisher, age_rate, images, videos, summary, platforms } = this.state.game;
         const { all_platforms } = this.state;
         return (
-            <section className='game-form'>
+            <section className='game-form content'>
                 <form>
                     <TextField
                         id="outlined-name"

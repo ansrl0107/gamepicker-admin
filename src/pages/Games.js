@@ -29,7 +29,7 @@ class Games extends Component {
     render() {
         const { games } = this.state;
         return (
-            <section className='games'>
+            <section className='games content'>
                 <Tooltip title="Add Game"
                     aria-label="Add" 
                     onClick={this.handleFab}

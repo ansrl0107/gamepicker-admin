@@ -34,7 +34,6 @@
 .game-list {
     position: relative;
     height: calc(100% - 48px);
-    padding: 8px;
     box-sizing: border-box;
 }
 

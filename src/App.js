@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { Home, Games, Login } from './pages'
 import GameCreate from './pages/GameCreate';
 import GameDetail from './pages/GameDetail';
+import PushNotification from './pages/PushNotification';
 import './App.css'
 
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
@@ -70,8 +71,8 @@ const styles = theme => ({
 		marginLeft: drawerWidth,
 		[theme.breakpoints.up('md')]: {
 			width: `calc(100% - ${drawerWidth}px)`,
-			height: 0
-		},
+			display: 'none'
+		}
 	},
 	menuButton: {
 		marginRight: 20,
@@ -194,6 +195,7 @@ class ResponsiveDrawer extends React.Component {
 								<Route exact path='/games' component={Games} />
 								<Route path='/games/create' component={GameCreate} />
 								<Route path='/games/:id' component={GameDetail} />
+								<Route path='/notification' component={PushNotification} />
 							</Switch>
 						</main>
 					</MuiThemeProvider>

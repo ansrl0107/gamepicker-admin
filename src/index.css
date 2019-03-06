@@ -37,3 +37,7 @@ html, body, #root {
 ::-webkit-scrollbar-thumb {
     background: #E71469;
 }
+
+section.content {
+  padding: 16px;
+}
