@@ -99,3 +99,44 @@
     background-color: #fff;
     font-weight: bold;
 }
+
+.game-form .features {
+    border: 1px solid rgba(0,0,0,0.2);
+    margin-bottom: 16px;
+    border-radius: 4px;
+    overflow: hidden;
+    background-color: #fff;
+}
+
+.game-form .features table {
+    border-collapse: collapse;
+    width: 100%;
+    background-color: #fff;
+    text-align: center;
+}
+
+.game-form .features table tr:nth-child(2n-1) {
+    background-color: #fafafa;
+}
+
+.game-form .features table tr:nth-child(2n) {
+    background-color: #ffffff;
+}
+
+.game-form .feature_button {
+    background-color: inherit;
+    border: none;
+    color: #E61974;
+    outline: none;
+    width: 100%;
+    border-radius: 4px;
+    padding: 0px 16px;
+    height: 30px;
+    transition: all 0.2s ease-in-out;
+}
+
+.game-form .feature_button.active {
+    background-color: #E61974;
+    color: #fff;
+    font-weight: bold;
+}

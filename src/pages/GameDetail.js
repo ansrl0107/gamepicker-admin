@@ -22,6 +22,24 @@ class GameCreate extends React.Component {
             images: [],
             videos: [],
             platforms: []
+        },
+        game_features: {
+            게임성: undefined,
+            조작성: undefined,
+            난이도: undefined,
+            스토리: undefined,
+            몰입도: undefined,
+            BGM: undefined,
+            공포성: undefined,
+            과금유도: undefined,
+            노가다성: undefined,
+            진입장벽: undefined,
+            필요성능: undefined,
+            플레이타임: undefined,
+            가격: undefined,
+            DLC: undefined,
+            버그: undefined,
+            그래픽: undefined
         }
     }
     handleClose = (event, reason) => {
@@ -53,10 +71,29 @@ class GameCreate extends React.Component {
                 }
             });
             const json = await res.json();
-            const game = json.game;
-            console.log(game);
-            
+            const game = json.game;            
             this.setState({ game });
+        } catch (err) {
+            console.error(err);
+        }
+        try {
+            const token = sessionStorage.getItem('token');
+            const res = await fetch(`http://api.gamepicker.co.kr/games/${game_id}/features`, {
+                headers: {
+                    'authorization': process.env.REACT_APP_AUTHORIZATION,
+                    'x-access-token': token,
+                }
+            });
+            const json = await res.json();
+            if (res.ok) {
+                if (json.feature) {
+                    this.setState({
+                        game_features: json.feature
+                    })
+                }                
+            }  else {
+                throw json.message;
+            }
         } catch (err) {
             console.error(err);
         }
@@ -102,14 +139,27 @@ class GameCreate extends React.Component {
                 method: 'put',
                 body: JSON.stringify(this.state.game)
             });
-            if (res.ok) {
+            if (!res.ok) {
+                const json = await res.json();
+                throw json.message;
+            }
+            const res2 = await fetch(`http://api.gamepicker.co.kr/games/${game_id}/features`, {
+                headers: {
+                    'x-access-token': token,
+                    'authorization': process.env.REACT_APP_AUTHORIZATION,
+                    'content-type': 'application/json'
+                },
+                method: 'post',
+                body: JSON.stringify(this.state.game_features)
+            });
+            if (res2.ok) {
                 this.handleToastMessage('Update complete')
             } else {
-                const json = await res.json();
-                this.handleToastMessage(json.message);
+                const json = await res2.json();
+                throw json.message
             }
         } catch (err) {
-            console.error(err);
+            this.handleToastMessage(err);
         }
     }
     handleDeletePlatform = (e) => {
@@ -186,9 +236,22 @@ class GameCreate extends React.Component {
             }
         });
     }
+    handleTest = (e) => {
+        const score = Number(e.target.value);
+        const name = e.target.name;
+        const { game_features } = this.state; 
+        this.setState({
+            game_features: {
+                ...this.state.game_features,
+                [name]: game_features[name] === score?undefined:score
+            }
+        })
+    }
     render() {
         const { title, developer, publisher, age_rate, images, videos, summary, platforms } = this.state.game;
-        const { all_platforms } = this.state;
+        const { all_platforms, game_features } = this.state;
+        const features = [ '게임성', '조작성', '난이도', '스토리', '몰입도', 'BGM', '공포성', '과금유도', '노가다성', '진입장벽', '필요성능', '플레이타임', '가격', 'DLC', '버그', '그래픽' ];
+        
         return (
             <section className='game-form content'>
                 <form>
@@ -291,6 +354,27 @@ class GameCreate extends React.Component {
                                 return <div key={index} className='platform' data-id={platform.id} onClick={this.handleAddPlatform}>{platform.value}</div>                          
                             }
                         })}
+                    </div>
+                    <h1>Features</h1>
+                    <div className='features'>
+                        <table>
+                            <tbody>
+                                {features.map((feature, index) => {
+                                    return (
+                                        <tr key={index}>
+                                            <td>{feature}</td>
+                                            {[1,2,3,4,5].map((score, index) => {
+                                                return (
+                                                    <td key={index}>
+                                                        <input type='button' className={game_features[feature]===score?"feature_button active":"feature_button"} name={feature} value={score} onClick={this.handleTest}></input>
+                                                    </td>
+                                                )
+                                            })}
+                                        </tr>
+                                    )
+                                })}
+                            </tbody>
+                        </table>
                     </div>
                     <Button variant="contained" color="primary" fullWidth onClick={this.updateGame}>
                         Update
