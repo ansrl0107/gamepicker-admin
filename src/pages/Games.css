@@ -53,3 +53,21 @@
         height: 100%;
     }
 }
+
+.game-filter {
+    padding: 8px;
+    overflow: hidden;
+    width: 100%;
+}
+
+.game-filter > div {
+    float: left;
+}
+
+.game-filter > div:nth-child(1) {
+    width: calc(100% - 100px);
+}
+
+.game-filter > div:nth-child(2) {
+    width: 100px;
+}

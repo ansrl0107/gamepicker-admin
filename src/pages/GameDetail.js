@@ -86,9 +86,9 @@ class GameCreate extends React.Component {
             });
             const json = await res.json();
             if (res.ok) {
-                if (json.feature) {
+                if (json.features) {
                     this.setState({
-                        game_features: json.feature
+                        game_features: json.features
                     })
                 }                
             }  else {
