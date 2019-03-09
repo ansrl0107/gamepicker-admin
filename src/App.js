@@ -52,7 +52,7 @@ const my_theme = createMuiTheme({
       },
       typography: {
         useNextVariants: true,
-      },
+			}
       // error: will use the default color
     },
 });
