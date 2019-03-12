@@ -67,7 +67,7 @@ class Login extends Component {
     handleLogin = async () => {
         const { email, password } = this.state;
         try {
-            const res = await fetch(`http://api.gamepicker.co.kr/auth/login?admin`, {
+            const res = await fetch(`http://api.gamepicker.co.kr/auth/login`, {
                 headers: {
                     'authorization': 'w6mgLXNHbPgewJtRESxh',
                     'content-type': 'application/json'
@@ -79,9 +79,13 @@ class Login extends Component {
             });
             const json = await res.json();
             if (res.ok) {
-                sessionStorage.setItem('token', json.token);            
-                this.handleToastMessage('Login Success');
-                window.location.reload();
+                if (json.admin) {
+                    sessionStorage.setItem('token', json.token);            
+                    this.handleToastMessage('Login Success');
+                    window.location.reload();
+                } else {
+                    this.handleToastMessage("매니저 권한이 필요합니다.");
+                }
             } else {
                 this.handleToastMessage(json.message)
             }
