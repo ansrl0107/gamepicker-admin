@@ -133,7 +133,7 @@ class GameCreate extends React.Component {
         const token = sessionStorage.getItem('token');
         const game_id = window.location.pathname.split('/')[2];
         try {
-            const res = await fetch(`http://api.gamepicker.co.kr/games/${game_id}`, {
+            let res = await fetch(`http://api.gamepicker.co.kr/games/${game_id}`, {
                 headers: {
                     'x-access-token': token,
                     'authorization': process.env.REACT_APP_AUTHORIZATION,
@@ -146,20 +146,25 @@ class GameCreate extends React.Component {
                 const json = await res.json();
                 throw json.message;
             }
-            const res2 = await fetch(`http://api.gamepicker.co.kr/games/${game_id}/features`, {
-                headers: {
-                    'x-access-token': token,
-                    'authorization': process.env.REACT_APP_AUTHORIZATION,
-                    'content-type': 'application/json'
-                },
-                method: 'post',
-                body: JSON.stringify(this.state.game_features)
-            });
-            if (res2.ok) {
+            const { game_features } = this.state;
+            const game_features_keys = Object.keys(game_features);
+            const featuresNullCount = game_features_keys.filter(key => !game_features[key]).length;
+            if (featuresNullCount !== game_features_keys.length) {
+                res = await fetch(`http://api.gamepicker.co.kr/games/${game_id}/features`, {
+                    headers: {
+                        'x-access-token': token,
+                        'authorization': process.env.REACT_APP_AUTHORIZATION,
+                        'content-type': 'application/json'
+                    },
+                    method: 'post',
+                    body: JSON.stringify(game_features)
+                });
+            }
+            if (res.ok) {
                 this.handleToastMessage('Update complete');
                 this.props.history.push('/games');
             } else {
-                const json = await res2.json();
+                const json = await res.json();
                 throw json.message
             }
         } catch (err) {
