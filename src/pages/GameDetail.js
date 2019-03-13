@@ -86,12 +86,12 @@ class GameCreate extends React.Component {
                 }
             });
             const json = await res.json();
-            const features = json.games.filter(item => item.id === Number(game_id))[0].features;
-            
+
             if (res.ok) {
-                if (features) {
+                const thisGame = json.games.filter(item => item.id === Number(game_id))[0];
+                if (thisGame) {
                     this.setState({
-                        game_features: features
+                        game_features: thisGame.features
                     })
                 }                
             }  else {
