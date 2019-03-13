@@ -37,7 +37,8 @@ class Games extends Component {
 
         try {
             const token = sessionStorage.getItem('token');
-            const res = await fetch(`http://api.gamepicker.co.kr/me/games/features`, {
+            const user_id = sessionStorage.getItem('id');
+            const res = await fetch(`http://api.gamepicker.co.kr/users/${user_id}/games/features`, {
                 headers: {
                     'authorization': process.env.REACT_APP_AUTHORIZATION,
                     'x-access-token': token

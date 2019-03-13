@@ -79,6 +79,7 @@ class Login extends Component {
             });
             const json = await res.json();
             if (res.ok) {
+                sessionStorage.setItem('id', json.user_id);
                 sessionStorage.setItem('token', json.token);            
                 this.handleToastMessage('Login Success');
                 window.location.reload();

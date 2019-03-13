@@ -78,17 +78,20 @@ class GameCreate extends React.Component {
         }
         try {
             const token = sessionStorage.getItem('token');
-            const res = await fetch(`http://api.gamepicker.co.kr/games/${game_id}/features`, {
+            const user_id = sessionStorage.getItem('id');
+            const res = await fetch(`http://api.gamepicker.co.kr/users/${user_id}/games/features`, {
                 headers: {
                     'authorization': process.env.REACT_APP_AUTHORIZATION,
                     'x-access-token': token,
                 }
             });
             const json = await res.json();
+            const features = json.games.filter(item => item.id === Number(game_id))[0].features;
+            
             if (res.ok) {
-                if (json.features) {
+                if (features) {
                     this.setState({
-                        game_features: json.features
+                        game_features: features
                     })
                 }                
             }  else {
