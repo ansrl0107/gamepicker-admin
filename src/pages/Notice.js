@@ -3,6 +3,9 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import ToastMessage from '../components/ToastMessage';
 
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css'; // ES6
+
 //공지폼을 wysiwyg 으로, 현재 올린 공지들을 볼수잇는 리스트 추가 해야함
 
 class Notice extends React.Component {
@@ -63,6 +66,10 @@ class Notice extends React.Component {
                 })
             });
             if (res.ok) {
+                this.setState({
+                    notice: '',
+                    notice_title: ''
+                });
                 this.handleToastMessage('작성 완료');
             } else {
                 const json = await res.json();
@@ -75,14 +82,39 @@ class Notice extends React.Component {
                 this.handleToastMessage(err);
             }
         }
-        
     }
     handleChange = (e) => {
         this.setState({
             [e.target.name]: e.target.value
         })
     }
-    //quill 로 공지 쓰는 부분 만들자
+
+    handleEditor = (data) => {
+        this.setState({ notice: data });
+    }
+    modules = {
+        toolbar: {
+            container: [
+                    [{ 'header': '1'}, {'header': '2'}, { 'font': [] }],
+                    [{size: []}],
+                    ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+                    [{'list': 'ordered'}, {'list': 'bullet'},
+                        {'indent': '-1'}, {'indent': '+1'}],
+                    ['link', 'image', 'video']
+            ],
+            // container:  [['bold', 'italic', 'underline', 'blockquote'],
+            // [{'list': 'ordered'}, {'list': 'bullet'}],
+            // ['formula','link', 'image'],
+            // ['clean']],
+            // handlers: { 'image' : this.handleImage }
+        },
+        clipboard: {
+            // toggle to add extra line breaks when pasting HTML:
+            matchVisual: false,
+        },
+        //imageDrop: true, // imageDrop 등록
+        // imageResize: {} // imageResize 등록
+    }
     render() {
         return (
             <section className='notice content'>
@@ -97,17 +129,10 @@ class Notice extends React.Component {
                         variant="outlined"
                         fullWidth
                     />
-                    <TextField
-                        id="outlined-notice"
-                        label="Notice"
-                        name="notice"
-                        value={this.state.notice}
-                        onChange={this.handleChange}
-                        margin="dense"
-                        variant="outlined"
-                        multiline
-                        rows={5}
-                        fullWidth
+                    <ReactQuill
+                        value = {this.state.notice}
+                        onChange = {this.handleEditor}
+                        modules = {this.modules}
                     />
                     <Button variant="contained" color="primary" fullWidth onClick={this.writeNotice}>
                         Write
