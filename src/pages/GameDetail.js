@@ -245,7 +245,7 @@ class GameCreate extends React.Component {
             }
         });
     }
-    handleTest = (e) => {
+    handleFeatures = (e) => {
         const score = Number(e.target.value);
         const name = e.target.name;
         const { game_features } = this.state; 
@@ -375,7 +375,7 @@ class GameCreate extends React.Component {
                                             {[1,2,3,4,5].map((score, index) => {
                                                 return (
                                                     <td key={index}>
-                                                        <input type='button' className={game_features[feature]===score?"feature_button active":"feature_button"} name={feature} value={score} onClick={this.handleTest}></input>
+                                                        <input type='button' className={game_features[feature]===score?"feature_button active":"feature_button"} name={feature} value={score} onClick={this.handleFeatures}></input>
                                                     </td>
                                                 )
                                             })}
