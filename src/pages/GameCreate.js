@@ -79,7 +79,7 @@ class GameCreate extends React.Component {
             });
             const json = await res.json();
             if (res.ok) {
-                
+                this.props.history.push('/games');
             } else {
                 this.handleToastMessage(json.message);
             }

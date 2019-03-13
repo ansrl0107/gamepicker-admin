@@ -156,7 +156,8 @@ class GameCreate extends React.Component {
                 body: JSON.stringify(this.state.game_features)
             });
             if (res2.ok) {
-                this.handleToastMessage('Update complete')
+                this.handleToastMessage('Update complete');
+                this.props.history.push('/games');
             } else {
                 const json = await res2.json();
                 throw json.message
