@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import RateCounter from '../components/RateCounter';
 
 class Home extends Component {
     componentDidMount = () => {        
@@ -9,9 +10,9 @@ class Home extends Component {
     }
     render() {
         return(
-            <div>
-                <div>dsadas</div>
-            </div>
+            <section className='home content'>
+                <RateCounter />
+            </section>
         )
     }
 }
