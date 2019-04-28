@@ -313,7 +313,7 @@ class GameCreate extends React.Component {
                         margin="dense"
                         variant="outlined"
                         multiline
-                        rows={5}
+                        rows={10}
                         fullWidth
                     />
                     <h1>images</h1>
