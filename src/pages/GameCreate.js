@@ -8,20 +8,21 @@ import ToastMessage from '../components/ToastMessage';
 
 class GameCreate extends React.Component {
     state = {
-        title: '',
-        developer: '',
-        publisher: '',
-        age_rate: '',
-        summary: '',
-        images: [],
-        videos: [],
-        platforms: [],
-        name: [],
         all_platforms: [],
         new_image: "",
         new_video: "",
         toastMessage: "",
-        toastOpen: false
+        toastOpen: false,
+        game: {
+            title: '',
+            developer: '',
+            publisher: '',
+            age_rate: '',
+            summary: '',
+            images: [],
+            videos: [],
+            platforms: []
+        }
     }
     handleToastMessage = (message) => {
         this.setState({
@@ -52,20 +53,20 @@ class GameCreate extends React.Component {
         }        
     }
     handleChange = (e) => {
-        this.setState({
-            [e.target.name]: e.target.value
-        });
-    }
-    handleSelect = (e) => {
-        const { platforms } = this.state;
-        platforms.push(Number(e.target.dataset.id));
-        this.setState({
-            platforms
-        })
+        if (this.state.hasOwnProperty(e.target.name)) {
+            this.setState({
+                [e.target.name]: e.target.value
+            })
+        } else {
+            this.setState({
+                game: {
+                    ...this.state.game,
+                    [e.target.name]: e.target.value
+                }
+            });
+        }
     }
     handleCreate = async (e) => {
-        const { title, developer, publisher, age_rate, images, videos, summary, platforms } = this.state;
-        const body = { title, developer, publisher, age_rate, images, videos, summary, platforms };
         const token = sessionStorage.getItem('token');
         try {
             const res = await fetch('http://api.gamepicker.co.kr/games', {
@@ -75,12 +76,12 @@ class GameCreate extends React.Component {
                     'content-type': 'application/json'
                 },
                 method: 'post',
-                body: JSON.stringify(body)
+                body: JSON.stringify(this.state.game)
             });
-            const json = await res.json();
             if (res.ok) {
                 this.props.history.push('/games');
             } else {
+                const json = await res.json();
                 this.handleToastMessage(json.message);
             }
         } catch (err) {
@@ -88,19 +89,42 @@ class GameCreate extends React.Component {
             this.handleToastMessage(err);
         }
     }
+    handleAddPlatform = (e) => {
+        const { platforms } = this.state.game;
+        platforms.push(e.target.textContent);        
+        this.setState({
+            platforms
+        })
+    }
     handleDeletePlatform = (e) => {
-        const { platforms } = this.state;
-        const id = Number(e.target.dataset.id);
-        const index = platforms.indexOf(id);
+        const { platforms } = this.state.game;
+        const value = e.target.textContent;        
+        const index = platforms.indexOf(value);
         platforms.splice(index, 1);
-        this.setState({ platforms });
+        this.setState({ 
+            game: {
+                ...this.state.game,
+                platforms
+            } 
+        });
     }
     handleAddImage = () => {
-        const { images, new_image } = this.state;
-        if (new_image.includes('http://') || new_image.includes('https://')) {
+        const { images } = this.state.game;
+        const { new_image } = this.state
+        if (new_image === '') {
+            this.handleToastMessage('Image links are not allowed blanks');
+        } else if (!new_image.includes('http://') && !new_image.includes('https://')) {
+            this.handleToastMessage('Please put the correct link')
+        } else {
             images.push(new_image);
-            this.setState({ images, new_image: "" });
+            this.setState({
+                game: {
+                    ...this.state.game,
+                    images
+                }
+            });
         }
+        this.setState({ new_image: '' })
     }
     handleDeleteImage = (e) => {
         let parentNode = e.target.parentElement;
@@ -108,15 +132,27 @@ class GameCreate extends React.Component {
             parentNode = parentNode.parentElement;
         }
         const index = parentNode.children[0].dataset.id;
-        const { images } = this.state;
+        const { images } = this.state.game;
         images.splice(index, 1);
-        this.setState({ images });
+        this.setState({
+            game: {
+                ...this.state.game,
+                images
+            }
+        });
     }
     handleAddVideo = () => {
-        const { videos, new_video } = this.state;
+        const { videos } = this.state.game;
+        const { new_video } = this.state;
         if (new_video.includes('http://') || new_video.includes('https://')) {
             videos.push(new_video);
-            this.setState({ videos, new_video: "" });
+            this.setState({
+                game: {
+                    ...this.state.game,
+                    videos
+                },
+                new_video: ''
+            });
         }
     }
     handleDeleteVideo = (e) => {
@@ -125,20 +161,26 @@ class GameCreate extends React.Component {
             parentNode = parentNode.parentElement;
         }
         const index = parentNode.children[0].dataset.id;
-        const { videos } = this.state;
+        const { videos } = this.state.game;
         videos.splice(index, 1);
-        this.setState({ videos });
+        this.setState({
+            game: {
+                ...this.state.game,
+                videos
+            }
+        });
     }
     render() {
-        const { all_platforms, images, videos } = this.state;
+        const { title, developer, publisher, age_rate, images, videos, summary, platforms } = this.state.game;
+        const { all_platforms } = this.state;
         return (
             <section className='game-form content'>
                 <form>
-                    <TextField
+                <TextField
                         id="outlined-name"
                         label="title"
                         name="title"
-                        value={this.state.title}
+                        value={title}
                         onChange={this.handleChange}
                         margin="dense"
                         variant="outlined"
@@ -148,7 +190,7 @@ class GameCreate extends React.Component {
                         id="outlined-developer"
                         label="developer"
                         name="developer"
-                        value={this.state.developer}
+                        value={developer}
                         onChange={this.handleChange}
                         margin="dense"
                         variant="outlined"
@@ -158,7 +200,7 @@ class GameCreate extends React.Component {
                         id="outlined-name"
                         label="publisher"
                         name="publisher"
-                        value={this.state.publisher}
+                        value={publisher}
                         onChange={this.handleChange}
                         margin="dense"
                         variant="outlined"
@@ -168,7 +210,7 @@ class GameCreate extends React.Component {
                         id="outlined-name"
                         label="age rate"
                         name="age_rate"
-                        value={this.state.age_rate}
+                        value={age_rate}
                         onChange={this.handleChange}
                         margin="dense"
                         variant="outlined"
@@ -178,7 +220,7 @@ class GameCreate extends React.Component {
                         id="outlined-name"
                         label="summary"
                         name="summary"
-                        value={this.state.summary}
+                        value={summary}
                         onChange={this.handleChange}
                         margin="dense"
                         variant="outlined"
@@ -227,10 +269,10 @@ class GameCreate extends React.Component {
                     <h1>platforms</h1>
                     <div className='platforms'>
                         {all_platforms.map((platform, index) => {
-                            if (this.state.platforms.includes(platform.id)) {
+                            if (platforms.includes(platform.value)) {
                                 return <div key={index} className='platform selected' data-id={platform.id} onClick={this.handleDeletePlatform}>{platform.value}</div>
                             } else {
-                                return <div key={index} className='platform' data-id={platform.id} onClick={this.handleSelect}>{platform.value}</div>                          
+                                return <div key={index} className='platform' data-id={platform.id} onClick={this.handleAddPlatform}>{platform.value}</div>                          
                             }
                         })}
                     </div>
