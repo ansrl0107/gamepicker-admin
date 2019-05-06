@@ -5,6 +5,7 @@ import GameDetail from './pages/GameDetail';
 import PushNotification from './pages/PushNotification';
 import Reply from './pages/Reply';
 import Notice from './pages/Notice';
+import News from './pages/News';
 import NotMatch from './pages/NotMatch';
 import './App.css'
 
@@ -144,6 +145,12 @@ class ResponsiveDrawer extends React.Component {
 						</ListItemIcon>
 						<ListItemText primary='Notice' />
 					</ListItem>
+					<ListItem button key='News' component={Link} to="/news">
+						<ListItemIcon>
+							<NoticeIcon color='primary'/>
+						</ListItemIcon>
+						<ListItemText primary='News' />
+					</ListItem>
 				</List>
 			</div>
 		);
@@ -200,6 +207,7 @@ class ResponsiveDrawer extends React.Component {
 								<Route path='/notification' component={PushNotification} />
 								<Route path='/reply' component={Reply} />
 								<Route path='/notice' component={Notice} />
+								<Route path='/news' component={News} />
 								<Route component={NotMatch} />
 							</Switch>
 						</main>
