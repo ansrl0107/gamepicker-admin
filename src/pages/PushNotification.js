@@ -3,18 +3,17 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
+import { RadioGroup, Radio } from '@material-ui/core';
+import ToastMessage from '../components/ToastMessage';
 
 class PushNotification extends React.Component {
     state = {
         title: '',
         message: '',
-        data: {},
-        checked_male: false,
-        checked_female: false,
-        min_age: undefined,
-        max_age: undefined,
-        min_date: undefined,
-        max_date: undefined
+        gender: 'm',
+        minAge: 0,
+        maxAge: 100,
+
     }
     handleDateChange = date => {
         this.setState({ selectedDate: date });
@@ -24,12 +23,43 @@ class PushNotification extends React.Component {
             [e.target.name]: e.target.value
         })
     }
-    handleSend = (e) => {
-        console.log(this.state);
+    handleToastMessage = (message) => {
+        this.setState({
+            toastMessage: message,
+            toastOpen: true
+        })
+    }
+    handleSend = async () => {
+        const token = sessionStorage.getItem('token');
+        try {
+            const res = await fetch('http://api.gamepicker.co.kr/admin/push', {
+                headers: {
+                    'authorization': process.env.REACT_APP_AUTHORIZATION,
+                    'content-type': 'application/json',
+                    'x-access-token': token
+                },
+                method: 'post',
+                body: JSON.stringify(this.state)
+            });
+            console.log(res);
+            
+            if (res.ok) {
+                this.handleToastMessage('success');
+            } else {
+                const json = await res.json();
+                this.handleToastMessage(json.message)
+            }
+        } catch (err) {
+            if (err.message) {
+                this.handleToastMessage(err.message)
+            } else {
+                this.handleToastMessage(err);
+            }
+        }
     }
     handleCheck = (e) => {
         this.setState({
-            [e.target.name]: !this.state[e.target.name]
+            [e.target.name]: e.target.value
         })
     }
     render() {
@@ -38,44 +68,29 @@ class PushNotification extends React.Component {
                 <form>
                     <div className='push-notification-control'>
                         <h1>Gender</h1>
-                        <FormControlLabel
-                            control={
-                                <Checkbox
-                                checked={this.state.checked_male}
-                                name='checked_male'
-                                onChange={this.handleCheck}
-                                value="checked_male"
-                                color="primary"
-                                />
-                            }
-                            label="male"
-                        />
-                        <FormControlLabel
-                            control={
-                                <Checkbox
-                                checked={this.state.checked_female}
-                                name='checked_female'
-                                onChange={this.handleCheck}
-                                value="checked_female"
-                                color="primary"
-                                />
-                            }
-                            label="female"
-                        />
+                        <RadioGroup
+                            aria-label='Gender'
+                            name='gender'
+                            value={this.state.gender}
+                            onChange={this.handleCheck}
+                        >   
+                            <FormControlLabel value='m' control={<Radio />} label='male' />
+                            <FormControlLabel value='f' control={<Radio />} label='female' />
+                        </RadioGroup>
                         <h1>Age</h1>
                         <TextField
                             id='oulined-min-age'
                             label='Minimum age'
-                            name='min_age'
-                            value={this.state.min_age}
+                            name='minAge'
+                            value={this.state.minAge}
                             onChange={this.handleChange}
                             margin="dense"
                         />
                         <TextField
                             id='oulined-max-age'
                             label='Maximum age'
-                            name='min_age'
-                            value={this.state.max_age}
+                            name='maxAge'
+                            value={this.state.maxAge}
                             onChange={this.handleChange}
                             margin="dense"
                         />
@@ -131,6 +146,11 @@ class PushNotification extends React.Component {
                         Send
                     </Button>
                 </form>
+                <ToastMessage
+                    message={this.state.toastMessage}
+                    open={this.state.toastOpen}
+                    handleClose={this.handleClose}
+                />
             </section>
         )
     }
